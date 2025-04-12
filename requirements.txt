@@ -1,0 +1,7 @@
+gradio
+torch
+torch_geometric
+rdkit
+numpy
+pandas
+scikit-learn
