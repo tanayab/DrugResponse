@@ -42,4 +42,7 @@ Run these jupyter notebooks -> 1_Preprocessing_and_Training.ipynb and 2_Testing_
 https://drive.google.com/file/d/1cwBgLi-QLPtOS_hoehR3POlPLlWCs6eV/view?usp=drive_link 
 
 ### Preprocessed Test data link:
+
+## 4. Code Documentation 
+A detailed code explanation for the entire pipeline is present in a document under the `\documents` folder
 https://drive.google.com/file/d/1haMLs_F3o9OozvFQu5za1LKyeD9CzzCW/view?usp=sharing
