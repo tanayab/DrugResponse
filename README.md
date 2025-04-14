@@ -33,7 +33,6 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-pip install torch-geometric
 
 # Launch the Gradio app
 python app.py
