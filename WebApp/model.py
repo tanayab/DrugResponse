@@ -109,6 +109,6 @@ class DrugResponseModel(torch.nn.Module):
         combined = self.dropout(combined)
 
         output = self.output_layer(combined)
-        output = nn.Sigmoid()(output)
+        # No activation function as it is regression problem
 
         return output
