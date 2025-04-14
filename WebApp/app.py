@@ -9,9 +9,9 @@ from model import DrugResponseModel  # Assumes your model class is in model.py
 
 # Load model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model2 = DrugResponseModel(drug_feat_dim=78).to(device)
-model2.load_state_dict(torch.load("baseline.model", map_location=device))
-model2.eval()
+model = DrugResponseModel(drug_feat_dim=78).to(device) # 78 from data
+model.load_state_dict(torch.load("model_RAdam_MSELoss_lr0.0001_run19_Data.model", map_location=device))
+model.eval()
 
 # Load required mappings and features
 with open("drug_name_to_smiles.json") as f:
@@ -28,6 +28,10 @@ with open("smiles_graph_map.pkl", "rb") as f:
 
 with open("cell_label_to_id.json") as f:
     label_to_cosmic_id = json.load(f)
+
+with open("scaler_ic50.pkl", "rb") as f:
+    scaler = pickle.load(f)
+
 
 def smiles_to_pyg(smiles):
     graph_data = smiles_graph_map.get(smiles)
@@ -63,17 +67,20 @@ def predict_ic50_dropdown(drug_name, cell_label):
         cell_tensor = torch.tensor(cell_vector, dtype=torch.float32).view(1, 1, -1).to(device)
 
         with torch.no_grad():
-            output = model2(x, edge_index, batch, cell_tensor, edge_attr)
-            ic50 = output.item()
+            output = model(x, edge_index, batch, cell_tensor, edge_attr)
+            ic50_scaled = output.item()
+            ic50_raw_ln =  ic50_scaled * scaler.scale_[0] + scaler.mean_[0] # Converting to raw ln ic50 value as it was scaled for model training (Standard Scaler)
 
-        if ic50 < 0.5337153:
+
+        # Optional: add interpretation (low/medium/high response)
+        if ic50_raw_ln < 1.3409970:                            # Relative thresholds calculated based on IC50 value distribution in current data
             interpretation = "🟢 Strong Response"
-        elif ic50 < 0.5839771:
+        elif ic50_raw_ln < 3.8228531:
             interpretation = "🟡 Moderate Response"
         else:
             interpretation = "🔴 Weak Response"
 
-        return f"{ic50:.7f}\n{interpretation}"
+        return f"{ic50_raw_ln:.7f}\n{interpretation}"
 
     except Exception as e:
         return f"❌ Error during prediction: {str(e)}"
@@ -84,7 +91,7 @@ iface = gr.Interface(
         gr.Dropdown(choices=sorted(drug_name_to_smiles.keys()), label="Select Drug"),
         gr.Dropdown(choices=cell_dropdown_labels, label="Select Cell Line")
     ],
-    outputs=[gr.Textbox(label="Predicted IC50")],
+    outputs=[gr.Textbox(label="Predicted ln(IC50): IC50 values are expressed in terms of the natural logarithm.")],
     title="Cancer Drug Response Predictor (IC50)",
     description="""
     This app predicts the **IC50 (half maximal inhibitory concentration)** value for a given cancer drug and cell line combination.
