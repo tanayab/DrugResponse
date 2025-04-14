@@ -23,9 +23,15 @@ The model integrates **drug molecular structure** (via SMILES graphs) with **can
 ### Run the Web Application Locally
 
 ```bash
+# Clone the repo
 git clone https://github.com/tanayab/DrugResponse.git
-cd WebApp
+cd DrugResponse/WebApp/
 
+#(Optional) Create a Python Virtual Environment:
+python3 -m  venv venv
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 pip install torch-geometric
 
