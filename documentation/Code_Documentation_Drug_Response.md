@@ -11,7 +11,7 @@ This repository implements a modular and interpretable deep learning pipeline fo
 
 ### 🔧 Key Features:
 - **SMILES → Graph conversion** using RDKit
-- **Gene expression preprocessing** with Z-score normalization and outlier handling
+- **Gene expression preprocessing** with Z-score normalisation and outlier handling
 - **Dataset packaging** with PyTorch Geometric
 - **GCN + CNN architecture** with attention fusion
 - **Training + Hyperparameter tuning + Evaluation**
@@ -25,13 +25,13 @@ This repository implements a modular and interpretable deep learning pipeline fo
 |----------|-------------|
 | `convert_smile_to_graph()` | Parses SMILES into RDKit molecular graphs |
 | `encode_atom_features()` | Extracts atomic descriptors: atom type, valency, hybridisation |
-| `preprocess_gene_expression()` | Cleans and Z-score normalizes gene expression |
+| `preprocess_gene_expression()` | Cleans and Z-score normalises gene expression |
 | `prepare_drug_cellline_dataset()` | Combines molecular graphs and gene vectors |
-| `DrugResponseModel` / `DrugResponseModel_v2` | Hybrid architecture: GCN + 1D CNN + cross-attention |
+| `DrugResponseModel` | Hybrid architecture: GCN + 1D CNN + cross-attention |
 | `train_and_evaluate_model()` | Trains, validates, and evaluates model with logging |
 | `evaluate_per_drug()` | Computes metrics per compound |
 | `save_model_and_results()` | Persists model weights and metrics |
-| `fetch_hyperparam_results()` | Loads and visualizes tuning results |
+| `fetch_hyperparam_results()` | Loads and visualises tuning results |
 | `predicting_and_evaluate()` | Runs full evaluation on holdout test set |
 
 ---
@@ -44,7 +44,7 @@ This repository implements a modular and interpretable deep learning pipeline fo
 
 ### Step 2: Gene Expression Preprocessing
 - `preprocess_gene_expression()` applies log transform, Z-score normalisation.
-- `detect_outliers_iqr()` filters noisy or outlier genes to improve generalization.
+- `detect_outliers_iqr()` filters noisy or outlier genes to improve generalisation.
 
 ### Step 3: Dataset Assembly
 - `prepare_drug_cellline_dataset()` merges drug and gene data into graph + vector formats.
@@ -56,7 +56,7 @@ This repository implements a modular and interpretable deep learning pipeline fo
 - Managed by `train_and_evaluate_model()` and `train()` for parameter updates.
 
 ### Step 5: Hyperparameter Tuning
-- Explores optimizers (Adam, RMSprop, SGD), loss functions (MSE, Huber), learning rates (1e-3, 5e-4).
+- Explores optimisers (Adam, RMSprop, RAdam, AdamW), loss functions (MSE, HuberLoss(delta=0.5), SmoothL1Loss), learning rates (1e-4, 5e-4).
 - Evaluated using:
   - `compute_mse()`, `compute_rmse()`
   - `compute_pearson_correlation()`, `compute_spearman_correlation()`
@@ -70,12 +70,12 @@ This repository implements a modular and interpretable deep learning pipeline fo
 - `predicting_and_evaluate()` evaluates on hold-out data.
 - Metrics + plots:
   - `plot_training_and_test_loss()`
-  - `plot_true_vs_predicted()`
   - `plot_residuals()`
 
 ### Step 8: Per-Drug Analysis
 - `evaluate_per_drug()` groups metrics by drug for bias/imbalance analysis.
 - Output: Ranked DataFrame of drug-wise performance.
+
 
 ### Step 9: Gradio Deployment
 - Lightweight web app allows users to:
@@ -96,7 +96,6 @@ This repository implements a modular and interpretable deep learning pipeline fo
 
 ### Diagnostic Plots
 - **Training vs Test Loss**
-- **True vs Predicted IC50**
 - **Residual Distributions**
 
 ---
@@ -131,10 +130,10 @@ This end-to-end pipeline:
 2. Preprocesses gene expression with robust normalisation
 3. Fuses both modalities using cross-attention in a deep network
 4. Trains and evaluates using statistical metrics and visual diagnostics
-5. Analyzes per-drug performance for interpretability
+5. Analyses per-drug performance for interpretability
 6. Exposes predictions through a Gradio web interface
 
 The codebase is:
 - **Modular & Reproducible**
 - **Highly Commented**
-- **Optimized for Biomedical Deep Learning**
+- **Optimised for Biomedical Deep Learning**
