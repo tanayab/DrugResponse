@@ -116,11 +116,20 @@ This repository implements a modular and interpretable deep learning pipeline fo
 
 #### To Run Locally:
 ```bash
+# Clone the repo
+git clone https://github.com/tanayab/DrugResponse.git
+cd DrugResponse/WebApp/
+
+#(Optional) Create a Python Virtual Environment:
+python3 -m  venv venv
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Launch the Gradio app
 python app.py
 ```
-See `README.md` for setup instructions.
-
 ---
 
 ## ✅ Summary
